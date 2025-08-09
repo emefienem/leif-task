@@ -41,6 +41,16 @@ interface Staff {
   avatar: string;
 }
 
+interface Records {
+  clockIn: Date | undefined;
+  clockInLocation: string | null | undefined;
+  id: number;
+  name: string;
+  role: string;
+  avatar: string;
+  key: number;
+}
+
 interface TimeEntry {
   id: string;
   staffId: number;
@@ -349,7 +359,7 @@ export default function HealthcareClockApp() {
     {
       title: "Duration",
       key: "duration",
-      render: (_: unknown, record: any) => {
+      render: (_: unknown, record: Records) => {
         if (record.clockIn) {
           const duration =
             (new Date().getTime() - record.clockIn.getTime()) /

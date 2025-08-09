@@ -6,7 +6,7 @@ type Context = {
     id: string;
     email?: string;
     name?: string;
-    [key: string]: any;
+    [key: string]: unknown;
   };
 };
 
