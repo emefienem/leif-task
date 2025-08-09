@@ -1,103 +1,157 @@
-import Image from "next/image";
+// import { auth0 } from "@/lib/auth0";
+// import "./globals.css";
+
+// export default async function Home() {
+//   // Fetch the user session
+//   const session = await auth0.getSession();
+
+//   // If no session, show sign-up and login buttons
+//   if (!session) {
+//     return (
+//       <main>
+//         <a href="/auth/login?screen_hint=signup">
+//           <button>Sign up</button>
+//         </a>
+//         <a href="/auth/login">
+//           <button>Log in</button>
+//         </a>
+//       </main>
+//     );
+//   }
+
+//   // If session exists, show a welcome message and logout button
+//   return (
+//     <main>
+//       <h1>Welcome, {session.user.name}!</h1>
+//       <p>
+//         <a href="/auth/logout">
+//           <button>Log out</button>
+//         </a>
+//       </p>
+//     </main>
+//   );
+// }
+
+"use client";
+import React, { useEffect } from "react";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+
+import { useQuery, gql } from "@apollo/client";
+
+const ME_QUERY = gql`
+  query Me {
+    me {
+      id
+      email
+      name
+      role
+    }
+  }
+`;
+
+// export default function DashboardPage() {
+//   const { data, loading, error } = useQuery(ME_QUERY);
+
+//   if (loading) return <p>Loading...</p>;
+//   if (error) return <p>Error: {error.message}</p>;
+
+//   return (
+//     <div>
+//       <h1>Welcome {data.me.name || data.me.email}</h1>
+//       {/* rest of your dashboard */}
+//     </div>
+//   );
+// }
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { data, loading, error } = useQuery(ME_QUERY);
+  useEffect(() => {
+    if (data?.me) {
+      console.log("User info from backend:", data.me);
+    }
+  }, [data]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error: {error.message}</p>;
+  return (
+    <div className="bg-white text-gray-900">
+      {/* Header */}
+      <Header />
+
+      {/* Hero Section */}
+      <section className="pt-24 pb-16 bg-gradient-to-br from-lief-light via-white to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight animate-on-scroll">
+            Smart Clock-In System for{" "}
+            <span className="text-healthcare-green">Healthcare Workers</span>
+          </h1>
+          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed animate-on-scroll">
+            Streamline workforce management with location-based clock-in/out,
+            real-time dashboards, and comprehensive analytics. Built for
+            hospitals, clinics, and healthcare organizations.
+          </p>
+          {/* <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-on-scroll">
+            <button className="bg-healthcare-green text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transform hover:scale-105 shadow-lg transition-all">
+              <i className="fas fa-play mr-2"></i> Start Free Trial
+            </button>
+            <button className="border-2 border-lief-blue text-lief-blue px-8 py-4 rounded-lg text-lg font-semibold hover:bg-lief-blue hover:text-white transition-all">
+              <i className="fas fa-calendar mr-2"></i> Schedule Demo
+            </button>
+          </div> */}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Example Section */}
+      <section id="features" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold mb-4 animate-on-scroll">
+            Complete Workforce Management Solution
+          </h2>
+          <p className="text-xl text-gray-600 mb-12 animate-on-scroll">
+            Everything you need to manage your healthcare workforce efficiently
+          </p>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[...Array(3)].map((_, i) => (
+              <div
+                key={i}
+                className="bg-gradient-to-b from-green-50 to-white p-8 rounded-2xl border border-green-100 hover:shadow-xl transition-all animate-on-scroll"
+              >
+                <div className="w-16 h-16 bg-healthcare-green rounded-full flex items-center justify-center mx-auto mb-6">
+                  <i className="fas fa-map-marker-alt text-white text-2xl"></i>
+                </div>
+                <h3 className="text-xl font-bold mb-4">
+                  Location-Based Security
+                </h3>
+                <p className="text-gray-600">
+                  Ensure staff can only clock in within designated perimeters.
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 bg-gradient-to-r from-blue-500 to-green-500">
+        <div className="max-w-4xl mx-auto text-center text-white px-4">
+          <h2 className="text-4xl font-bold mb-6">Ready to Transform?</h2>
+          <p className="text-xl text-blue-300 mb-8">
+            Join hundreds of healthcare organizations already using Lief Care.
+          </p>
+          {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="bg-white text-lief-blue px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transform hover:scale-105 shadow-lg transition-all">
+              <i className="fas fa-rocket mr-2"></i> Start Free 30-Day Trial
+            </button>
+            <button className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-lief-blue transition-all">
+              <i className="fas fa-phone mr-2"></i> Contact Sales
+            </button>
+          </div> */}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
