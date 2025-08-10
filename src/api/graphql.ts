@@ -46,7 +46,6 @@
 
 // export default server.createHandler({ path: "/api/graphql" });
 
-// pages/api/graphql.ts
 import { createYoga } from "graphql-yoga";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import type { NextApiRequest, NextApiResponse } from "next";

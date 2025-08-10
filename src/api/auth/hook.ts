@@ -4,7 +4,13 @@ import { auth0 } from "@/lib/auth0";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await auth0.getSession();
-  const auth0Id = session?.user.sub;
+
+  if (!session || !session.user || !session.user.email) {
+    return res
+      .status(401)
+      .json({ message: "Unauthorized: No valid session or user email" });
+  }
+  const auth0Id = session.user.sub;
   const { email, secret } = req.body;
   //   const MANAGER_ID = "fixed-manager-id";
 
@@ -18,8 +24,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await prisma.user.create({
       data: {
         id: auth0Id,
-        email: session?.user.email!,
-        name: session?.user.name || null,
+        email: session.user.email!,
+        name: session.user.name || null,
         role: "CARE_WORKER",
         // managerId: MANAGER_ID,
       },

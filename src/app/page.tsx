@@ -50,25 +50,12 @@ const ME_QUERY = gql`
   }
 `;
 
-// export default function DashboardPage() {
-//   const { data, loading, error } = useQuery(ME_QUERY);
-
-//   if (loading) return <p>Loading...</p>;
-//   if (error) return <p>Error: {error.message}</p>;
-
-//   return (
-//     <div>
-//       <h1>Welcome {data.me.name || data.me.email}</h1>
-//       {/* rest of your dashboard */}
-//     </div>
-//   );
-// }
 
 export default function Home() {
   const { data, loading, error } = useQuery(ME_QUERY);
   useEffect(() => {
     if (data?.me) {
-      console.log("User info from backend:", data.me);
+      console.log("User info from backend:", data);
     }
   }, [data]);
 
