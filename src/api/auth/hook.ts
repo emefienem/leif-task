@@ -69,9 +69,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).json({
       message: `User with email: ${email} created successfully`,
     });
-  } catch (error: any) {
-    // If user exists, or other DB error
-    return res.status(500).json({ error: error.message || "Unknown error" });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ error: error.message });
+    }
   }
 };
 
