@@ -122,7 +122,32 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
-  email: 'email'
+  auth0Id: 'auth0Id',
+  email: 'email',
+  name: 'name',
+  role: 'role',
+  managerId: 'managerId'
+};
+
+exports.Prisma.ShiftScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  clockInAt: 'clockInAt',
+  clockOutAt: 'clockOutAt',
+  clockInNote: 'clockInNote',
+  clockOutNote: 'clockOutNote',
+  clockInLat: 'clockInLat',
+  clockInLng: 'clockInLng',
+  clockOutLat: 'clockOutLat',
+  clockOutLng: 'clockOutLng'
+};
+
+exports.Prisma.GeoFenceScalarFieldEnum = {
+  id: 'id',
+  managerId: 'managerId',
+  lat: 'lat',
+  lng: 'lng',
+  radiusKm: 'radiusKm'
 };
 
 exports.Prisma.SortOrder = {
@@ -135,9 +160,19 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.Role = exports.$Enums.Role = {
+  MANAGER: 'MANAGER',
+  CARE_WORKER: 'CARE_WORKER'
+};
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Shift: 'Shift',
+  GeoFence: 'GeoFence'
 };
 
 /**
