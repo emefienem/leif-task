@@ -40,6 +40,7 @@
 
 import { prisma } from "@/lib/prisma";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { Prisma } from "../../../generated/prisma";
 
 // src/api/auth/hook.ts
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -67,12 +68,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     return res.status(200).json({ message: "User created" });
-  } catch (error) {
-    if ((error as any).code === "P2002") {
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError) {
       // Prisma unique constraint — user already exists
-      return res.status(200).json({ message: "User already exists" });
+      if (e.code === "P2002") {
+        return res.status(200).json({ message: "User already exists" });
+      }
     }
-    console.error("Unexpected error", error);
+    console.error("Unexpected error", e);
     return res.status(200).json({ message: "Ignored: Internal error" });
   }
 };

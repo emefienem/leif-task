@@ -639,7 +639,7 @@ const ManagerPage = () => {
       title: "Staff",
       dataIndex: "name",
       key: "name",
-      render: (_: any, record: WeeklyHours) => (
+      render: (_: unknown, record: WeeklyHours) => (
         <Space>
           <Avatar>{record.name[0]}</Avatar>
           <div>
@@ -795,7 +795,7 @@ const ManagerPage = () => {
                       title: "Staff",
                       dataIndex: "name",
                       key: "name",
-                      render: (_: any, record: Staff) => (
+                      render: (_: unknown, record: Staff) => (
                         <Space>
                           <Avatar>{record.name[0]}</Avatar>
                           <div>

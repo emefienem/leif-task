@@ -285,7 +285,8 @@ const CareWorkerPage = () => {
       return;
     }
     const activeEntry = data.getHistory.find(
-      (entry: any) => entry.userId === loggedInStaff.id && !entry.clockOutAt
+      (entry: { userId: string; clockOutAt: Date }) =>
+        entry.userId === loggedInStaff.id && !entry.clockOutAt
     );
     setCurrentlyClockedIn(Boolean(activeEntry));
   }, [data]);
