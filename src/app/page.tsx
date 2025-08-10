@@ -36,28 +36,23 @@
 import React, { useEffect } from "react";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-
-import { useQuery, gql } from "@apollo/client";
-
-const ME_QUERY = gql`
-  query Me {
-    me {
-      id
-      email
-      name
-      role
-    }
-  }
-`;
-
+import { useUser } from "@auth0/nextjs-auth0";
 
 export default function Home() {
-  const { data, loading, error } = useQuery(ME_QUERY);
+  const { user, isLoading } = useUser();
   useEffect(() => {
-    if (data?.me) {
-      console.log("User info from backend:", data);
+    if (!isLoading && user) {
+      fetch("/api/auth/hook", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          auth0Id: user.sub,
+          name: user.name,
+          email: user.email,
+        }),
+      });
     }
-  }, [data]);
+  }, [user, isLoading]);
 
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>Error: {error.message}</p>;
