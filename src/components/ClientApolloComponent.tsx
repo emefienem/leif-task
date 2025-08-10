@@ -1,4 +1,3 @@
-// ClientApolloProvider.tsx (client component)
 "use client";
 
 import { ApolloProvider } from "@apollo/client";

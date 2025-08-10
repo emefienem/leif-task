@@ -1,6 +1,6 @@
 import { auth0 } from "@/lib/auth0";
 import type { NextApiRequest, NextApiResponse } from "next";
-
+import { prisma } from "@/lib/prisma";
 export async function createContext({
   req,
   res,
@@ -17,8 +17,12 @@ export async function createContext({
     tokenSet: { accessToken },
   } = session;
 
+  const dbUser = await prisma.user.findUnique({
+    where: { auth0Id: user.sub }, // user.sub === event.user.user_id
+  });
+
   return {
-    user,
+    user: dbUser,
     accessToken,
   };
 }

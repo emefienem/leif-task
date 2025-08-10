@@ -64,7 +64,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     await prisma.user.create({
-      data: { id, email, name: name || null, role: "CARE_WORKER" },
+      data: { auth0Id: id, email, name: name || null, role: "CARE_WORKER" },
     });
 
     return res.status(200).json({ message: "User created" });
