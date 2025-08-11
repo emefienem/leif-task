@@ -188,11 +188,8 @@ const CareWorkerPage: React.FC = () => {
         }
         message.success("Clocked out successfully!");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Clock action error:", err);
-      message.error(
-        err?.message || "Failed to complete action. Please try again."
-      );
     }
   };
 

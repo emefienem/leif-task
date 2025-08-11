@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import { ClientApolloProvider } from "@/components/ClientApolloComponent";
-import { UserProvider } from "@auth0/nextjs-auth0/client";
 import AuthClientWrapper from "@/components/AuthClientWrapper";
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
