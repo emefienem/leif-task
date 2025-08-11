@@ -54,7 +54,7 @@ export default function UnauthorizedPage() {
                   marginBottom: "8px",
                 }}
               >
-                You don't have permission to access this resource.
+                You don&apos;t have permission to access this resource.
               </Text>
               <Text style={{ fontSize: "14px", color: "#8c8c8c" }}>
                 Please contact your administrator if you believe this is an
