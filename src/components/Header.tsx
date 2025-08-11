@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import { auth0 } from "@/lib/auth0";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { login, logout, signup } from "@/actions/auth";
 
-export default async function Header() {
-  const session = await auth0.getSession();
+export default function Header() {
+  const { user } = useUser();
   return (
     <nav className="bg-white fixed w-full z-50 top-0 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
@@ -18,7 +18,7 @@ export default async function Header() {
           </Link>
           {/* Auth buttons */}
           {/* <AuthButtons /> */}
-          {!session ? (
+          {!user ? (
             <>
               <form action={login}>
                 <button className="hover:text-blue-500 cursor-pointer">

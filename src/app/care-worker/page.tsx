@@ -1,212 +1,3 @@
-// "use client";
-// import React, { useState, useEffect } from "react";
-// import {
-//   Layout,
-//   Card,
-//   Button,
-//   Space,
-//   Avatar,
-//   Typography,
-//   Row,
-//   Col,
-//   Tag,
-//   message,
-// } from "antd";
-// import { CheckCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
-
-// const { Header, Content } = Layout;
-// const { Title, Text } = Typography;
-
-// interface Staff {
-//   id: number;
-//   name: string;
-//   role: string;
-//   avatar: string;
-// }
-
-// interface TimeEntry {
-//   id: string;
-//   staffId: number;
-//   clockIn: Date;
-//   clockOut: Date | null;
-//   clockInLocation: string | null;
-//   clockOutLocation: string | null;
-//   hoursWorked: string | null;
-// }
-
-// const staff: Staff = {
-//   id: 1,
-//   name: "Dr. Sarah Johnson",
-//   role: "Doctor",
-//   avatar: "👩‍⚕️",
-// };
-
-// const CareWorkerPage = () => {
-//   const [currentlyClockedIn, setCurrentlyClockedIn] = useState<boolean>(false);
-//   const [timeEntries, setTimeEntries] = useState<TimeEntry[]>([]);
-
-//   useEffect(() => {
-//     // On mount, check if there's a current active clock-in entry
-//     const activeEntry = timeEntries.find(
-//       (entry) => entry.staffId === staff.id && !entry.clockOut
-//     );
-//     setCurrentlyClockedIn(Boolean(activeEntry));
-//   }, [timeEntries]);
-
-//   const getCurrentLocation = (): Promise<{
-//     latitude: number;
-//     longitude: number;
-//   }> => {
-//     return new Promise((resolve) => {
-//       if (!navigator.geolocation) {
-//         resolve({ latitude: 6.5244, longitude: 3.3792 });
-//         return;
-//       }
-//       navigator.geolocation.getCurrentPosition(
-//         (pos) => {
-//           resolve({
-//             latitude: pos.coords.latitude,
-//             longitude: pos.coords.longitude,
-//           });
-//         },
-//         () => {
-//           resolve({ latitude: 6.5244, longitude: 3.3792 });
-//         }
-//       );
-//     });
-//   };
-
-//   const handleClockAction = async (action: "clock-in" | "clock-out") => {
-//     try {
-//       const location = await getCurrentLocation();
-//       const locationStr = `${location.latitude.toFixed(
-//         6
-//       )}, ${location.longitude.toFixed(6)}`;
-//       const now = new Date();
-
-//       if (action === "clock-in") {
-//         if (currentlyClockedIn) {
-//           message.warning("You are already clocked in!");
-//           return;
-//         }
-//         const newEntry: TimeEntry = {
-//           id: `${staff.id}-${Date.now()}`,
-//           staffId: staff.id,
-//           clockIn: now,
-//           clockOut: null,
-//           clockInLocation: locationStr,
-//           clockOutLocation: null,
-//           hoursWorked: null,
-//         };
-//         setTimeEntries((prev) => [newEntry, ...prev]);
-//         setCurrentlyClockedIn(true);
-//         message.success("Clocked in successfully!");
-//       } else {
-//         if (!currentlyClockedIn) {
-//           message.warning("You are not clocked in!");
-//           return;
-//         }
-//         setTimeEntries((prev) =>
-//           prev.map((entry) => {
-//             if (entry.staffId === staff.id && !entry.clockOut) {
-//               const clockOut = now;
-//               const hoursWorked = (
-//                 (clockOut.getTime() - entry.clockIn.getTime()) /
-//                 (1000 * 60 * 60)
-//               ).toFixed(2);
-//               return {
-//                 ...entry,
-//                 clockOut,
-//                 clockOutLocation: locationStr,
-//                 hoursWorked,
-//               };
-//             }
-//             return entry;
-//           })
-//         );
-//         setCurrentlyClockedIn(false);
-//         message.success("Clocked out successfully!");
-//       }
-//     } catch {
-//       message.error("Failed to get location. Please enable location services.");
-//     }
-//   };
-
-//   return (
-//     <Layout style={{ minHeight: "100vh", background: "#f0f2f5" }}>
-//       <Header
-//         style={{
-//           background: "#fff",
-//           padding: "0 24px",
-//           boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-//         }}
-//       >
-//         <Row justify="center" align="middle">
-//           <Title level={3} style={{ margin: 0, color: "#1890ff" }}>
-//             Healthcare Clock System
-//           </Title>
-//         </Row>
-//       </Header>
-
-//       <Content style={{ padding: "24px", maxWidth: "400px", margin: "0 auto" }}>
-//         <Card
-//           title={
-//             <Space>
-//               <Avatar size="large">{staff.avatar}</Avatar>
-//               <div>
-//                 <div style={{ fontWeight: 600 }}>{staff.name}</div>
-//                 <Text type="secondary">{staff.role}</Text>
-//               </div>
-//             </Space>
-//           }
-//         >
-//           <Row gutter={[16, 16]}>
-//             <Col span={24}>
-//               <Button
-//                 type="primary"
-//                 size="large"
-//                 block
-//                 icon={<CheckCircleOutlined />}
-//                 onClick={() => handleClockAction("clock-in")}
-//                 disabled={currentlyClockedIn}
-//                 style={{ height: "60px", fontSize: "16px" }}
-//               >
-//                 Clock In
-//               </Button>
-//             </Col>
-//             <Col span={24}>
-//               <Button
-//                 danger
-//                 size="large"
-//                 block
-//                 icon={<MinusCircleOutlined />}
-//                 onClick={() => handleClockAction("clock-out")}
-//                 disabled={!currentlyClockedIn}
-//                 style={{ height: "60px", fontSize: "16px" }}
-//               >
-//                 Clock Out
-//               </Button>
-//             </Col>
-//           </Row>
-
-//           <div style={{ marginTop: "24px", textAlign: "center" }}>
-//             <Text type="secondary">
-//               Status:{" "}
-//               {currentlyClockedIn ? (
-//                 <Tag color="green">Clocked In</Tag>
-//               ) : (
-//                 <Tag color="red">Clocked Out</Tag>
-//               )}
-//             </Text>
-//           </div>
-//         </Card>
-//       </Content>
-//     </Layout>
-//   );
-// };
-
-// export default CareWorkerPage;
-
 "use client";
 
 import React, { useState, useEffect } from "react";
@@ -221,75 +12,103 @@ import {
   Col,
   Tag,
   message,
+  Spin,
+  Modal,
+  Input,
+  Table,
+  Grid,
 } from "antd";
-import { CheckCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import {
+  CheckCircleOutlined,
+  LogoutOutlined,
+  MinusCircleOutlined,
+} from "@ant-design/icons";
+import { useQuery, useMutation } from "@apollo/client";
+import {
+  CLOCK_IN,
+  CLOCK_OUT,
+  ClockInOutData,
+  ClockInOutVars,
+  GET_HISTORY,
+  GET_ME,
+  HistoryData,
+  MeData,
+} from "@/lib/careWorkerDashboard";
+import { logout } from "@/actions/auth";
 
-const { Header, Content } = Layout;
 const { Title, Text } = Typography;
+const { useBreakpoint } = Grid;
+const { Header, Content } = Layout;
 
-const GET_HISTORY = gql`
-  query GetHistory {
-    getHistory {
-      id
-      clockInAt
-      clockOutAt
-      clockInLat
-      clockInLng
-      clockOutLat
-      clockOutLng
-      clockInNote
-      clockOutNote
-      userId
-    }
-  }
-`;
+const CareWorkerPage: React.FC = () => {
+  const screens = useBreakpoint();
+  const [currentlyClockedIn, setCurrentlyClockedIn] = useState<boolean>(false);
+  const [noteModalVisible, setNoteModalVisible] = useState(false);
+  const [noteText, setNoteText] = useState("");
+  const [pendingAction, setPendingAction] = useState<
+    "clock-in" | "clock-out" | null
+  >(null);
+  const [noteSubmitting, setNoteSubmitting] = useState(false);
 
-const CLOCK_IN = gql`
-  mutation ClockIn($lat: Float!, $lng: Float!, $note: String) {
-    clockIn(lat: $lat, lng: $lng, note: $note) {
-      id
-      clockInAt
-    }
-  }
-`;
+  // Get current user info
+  const {
+    data: userData,
+    loading: userLoading,
+    error: userError,
+  } = useQuery<MeData>(GET_ME);
 
-const CLOCK_OUT = gql`
-  mutation ClockOut($lat: Float!, $lng: Float!, $note: String) {
-    clockOut(lat: $lat, lng: $lng, note: $note) {
-      id
-      clockOutAt
-    }
-  }
-`;
+  // Get shift history
+  const {
+    data: historyData,
+    loading: historyLoading,
+    error: historyError,
+    refetch,
+  } = useQuery<HistoryData>(GET_HISTORY, {
+    variables: { userId: userData?.me?.id },
+    skip: !userData?.me?.id,
+    fetchPolicy: "network-only",
+    // onCompleted: (data) => {
+    //   const activeEntry = data.getHistory.find(
+    //     (entry) => entry?.user?.id === userData?.me?.id && !entry.clockOutAt
+    //   );
+    //   setCurrentlyClockedIn(Boolean(activeEntry));
+    // },
+  });
 
-// Example logged-in user info
-const loggedInStaff = {
-  id: "1",
-  name: "Dr. Sarah Johnson",
-  role: "Doctor",
-  avatar: "👩‍⚕️",
-};
+  const [clockInMutation, { loading: clockInLoading }] = useMutation<
+    ClockInOutData,
+    ClockInOutVars
+  >(CLOCK_IN);
 
-const CareWorkerPage = () => {
-  const [currentlyClockedIn, setCurrentlyClockedIn] = useState(false);
-  const { data, loading, error, refetch } = useQuery(GET_HISTORY);
-  const [clockInMutation, { loading: clockInLoading }] = useMutation(CLOCK_IN);
-  const [clockOutMutation, { loading: clockOutLoading }] =
-    useMutation(CLOCK_OUT);
+  const [clockOutMutation, { loading: clockOutLoading }] = useMutation<
+    ClockInOutData,
+    ClockInOutVars
+  >(CLOCK_OUT);
 
-  // Find active clock-in entry for the logged-in user
+  // On mount: restore from localStorage if available
   useEffect(() => {
-    if (!data?.getHistory) {
-      setCurrentlyClockedIn(false);
-      return;
+    const savedStatus = localStorage.getItem("currentlyClockedIn");
+    if (savedStatus !== null) {
+      setCurrentlyClockedIn(savedStatus === "true");
     }
-    const activeEntry = data.getHistory.find(
-      (entry: { userId: string; clockOutAt: Date }) =>
-        entry.userId === loggedInStaff.id && !entry.clockOutAt
+  }, []);
+
+  // Whenever currentlyClockedIn changes: save to localStorage
+  useEffect(() => {
+    localStorage.setItem("currentlyClockedIn", String(currentlyClockedIn));
+  }, [currentlyClockedIn]);
+
+  useEffect(() => {
+    if (!historyData?.getHistoryForWorkers || !userData?.me?.id) return;
+
+    const savedStatus = localStorage.getItem("currentlyClockedIn");
+    if (savedStatus !== null) return; // localStorage takes priority
+
+    const activeEntry = historyData.getHistoryForWorkers.find(
+      (entry) => entry.user.id === userData.me!.id && !entry.clockOutAt
     );
     setCurrentlyClockedIn(Boolean(activeEntry));
-  }, [data]);
+  }, [historyData, userData]);
 
   // Helper to get current location, fallback to default if denied
   const getCurrentLocation = (): Promise<{
@@ -315,115 +134,272 @@ const CareWorkerPage = () => {
     });
   };
 
-  const handleClockAction = async (action: "clock-in" | "clock-out") => {
+  const openNoteModal = (action: "clock-in" | "clock-out") => {
+    setPendingAction(action);
+    setNoteText("");
+    setNoteModalVisible(true);
+  };
+
+  const handleNoteSubmit = async () => {
+    if (!pendingAction) return;
+    setNoteSubmitting(true);
+    try {
+      await handleClockAction(pendingAction, noteText || undefined);
+    } finally {
+      setNoteSubmitting(false);
+      setNoteModalVisible(false);
+      setPendingAction(null);
+      setNoteText("");
+    }
+  };
+
+  const handleClockAction = async (
+    action: "clock-in" | "clock-out",
+    note?: string
+  ) => {
     try {
       const location = await getCurrentLocation();
-      const note = ""; // Optional note, can extend UI later
+      // const note = "";
 
       if (action === "clock-in") {
         if (currentlyClockedIn) {
           message.warning("You are already clocked in!");
           return;
         }
-        await clockInMutation({
+        const { data } = await clockInMutation({
           variables: { lat: location.latitude, lng: location.longitude, note },
         });
+        if (data?.clockIn) {
+          setCurrentlyClockedIn(true); // immediate update
+          await refetch();
+        }
         message.success("Clocked in successfully!");
       } else {
         if (!currentlyClockedIn) {
           message.warning("You are not clocked in!");
           return;
         }
-        await clockOutMutation({
+        const { data } = await clockOutMutation({
           variables: { lat: location.latitude, lng: location.longitude, note },
         });
+        if (data?.clockOut) {
+          setCurrentlyClockedIn(false); // immediate update
+          await refetch();
+        }
         message.success("Clocked out successfully!");
       }
-      refetch();
-    } catch (err) {
+    } catch (err: any) {
+      console.error("Clock action error:", err);
       message.error(
-        "Failed to get location or complete action. Please enable location services."
+        err?.message || "Failed to complete action. Please try again."
       );
     }
   };
 
-  // if (loading) return <p>Loading...</p>;
-  // if (error) return <p>Error loading history data.</p>;
+  if (userError || historyError) {
+    return (
+      <div style={{ padding: 20, whiteSpace: "pre-wrap", color: "red" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <Text type="danger">
+            Error loading data. Please refresh the page.
+          </Text>
+        </div>
 
-  return (
-    <Layout style={{ minHeight: "100vh", background: "#f0f2f5" }}>
-      <Header
+        <div>{JSON.stringify(userError || historyError, null, 2)}</div>
+      </div>
+    );
+  }
+
+  if (!userData?.me) {
+    return (
+      <div
         style={{
-          background: "#fff",
-          padding: "0 24px",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
         }}
       >
-        <Row justify="center" align="middle">
-          <Title level={3} style={{ margin: 0, color: "#1890ff" }}>
-            Healthcare Clock System
-          </Title>
-        </Row>
-      </Header>
+        <Text type="warning">Care Worker Login Required</Text>
+      </div>
+    );
+  }
 
-      <Content style={{ padding: "24px", maxWidth: 400, margin: "0 auto" }}>
-        <Card
-          title={
-            <Space>
-              <Avatar size="large">{loggedInStaff.avatar}</Avatar>
-              <div>
-                <div style={{ fontWeight: 600 }}>{loggedInStaff.name}</div>
-                <Text type="secondary">{loggedInStaff.role}</Text>
-              </div>
-            </Space>
-          }
+  const user = userData.me;
+
+  return (
+    <>
+      <Layout style={{ minHeight: "100vh", background: "#f0f2f5" }}>
+        <Header
+          style={{
+            background: "#fff",
+            padding: screens.xs ? "0 12px" : "0 24px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
         >
-          <Row gutter={[16, 16]}>
-            <Col span={24}>
-              <Button
-                type="primary"
-                size="large"
-                block
-                icon={<CheckCircleOutlined />}
-                onClick={() => handleClockAction("clock-in")}
-                disabled={
-                  currentlyClockedIn || clockInLoading || clockOutLoading
-                }
-                style={{ height: 60, fontSize: 16 }}
-              >
-                Clock In
-              </Button>
-            </Col>
-            <Col span={24}>
-              <Button
-                danger
-                size="large"
-                block
-                icon={<MinusCircleOutlined />}
-                onClick={() => handleClockAction("clock-out")}
-                disabled={
-                  !currentlyClockedIn || clockInLoading || clockOutLoading
-                }
-                style={{ height: 60, fontSize: 16 }}
-              >
-                Clock Out
-              </Button>
-            </Col>
-          </Row>
+          <Space>
+            <Title
+              level={3}
+              style={{ margin: 0, fontSize: screens.xs ? 18 : 24 }}
+            >
+              Healthcare Clock Management
+            </Title>
+          </Space>
+          <Space>
+            <Button
+              danger
+              icon={<LogoutOutlined />}
+              size={screens.xs ? "small" : "middle"}
+              onClick={logout}
+            >
+              {!screens.xs && "Logout"}
+            </Button>
+          </Space>
+        </Header>
 
-          <div style={{ marginTop: 24, textAlign: "center" }}>
-            <Text type="secondary">
-              Status:{" "}
-              {currentlyClockedIn ? (
-                <Tag color="green">Clocked In</Tag>
-              ) : (
-                <Tag color="red">Clocked Out</Tag>
-              )}
-            </Text>
-          </div>
-        </Card>
-      </Content>
-    </Layout>
+        <Content
+          style={{
+            padding: "24px",
+            maxWidth: 800,
+            height: 500,
+            margin: "0 auto",
+            width: "100%",
+          }}
+        >
+          <Card
+            title={
+              <Space>
+                <Avatar size="large">👩‍⚕️</Avatar>
+                <div>
+                  <div style={{ fontWeight: 600 }}>
+                    {user.name || user.email}
+                  </div>
+                  <Text type="secondary">{user.role}</Text>
+                </div>
+              </Space>
+            }
+          >
+            <Row gutter={[16, 16]}>
+              <Col span={24}>
+                <Button
+                  type="primary"
+                  size="large"
+                  block
+                  icon={<CheckCircleOutlined />}
+                  onClick={() => openNoteModal("clock-in")}
+                  disabled={
+                    currentlyClockedIn || clockInLoading || clockOutLoading
+                  }
+                  style={{ height: 60, fontSize: 16 }}
+                >
+                  Clock In
+                </Button>
+              </Col>
+              <Col span={24}>
+                <Button
+                  danger
+                  size="large"
+                  block
+                  icon={<MinusCircleOutlined />}
+                  onClick={() => openNoteModal("clock-out")}
+                  disabled={
+                    !currentlyClockedIn || clockInLoading || clockOutLoading
+                  }
+                  style={{ height: 60, fontSize: 16 }}
+                >
+                  Clock Out
+                </Button>
+              </Col>
+            </Row>
+
+            <div style={{ marginTop: 24, textAlign: "center" }}>
+              <Text type="secondary">
+                Status:{" "}
+                {currentlyClockedIn ? (
+                  <Tag color="green">Clocked In</Tag>
+                ) : (
+                  <Tag color="red">Clocked Out</Tag>
+                )}
+              </Text>
+            </div>
+          </Card>
+          {!historyLoading ? (
+            <div style={{ marginTop: 24 }}>
+              <Title level={4}>Shift History</Title>
+              <Table
+                columns={[
+                  {
+                    title: "Clock In",
+                    dataIndex: "clockInAt",
+                    key: "clockInAt",
+                    render: (text: string) =>
+                      text ? new Date(text).toLocaleString() : "-",
+                  },
+                  {
+                    title: "Clock Out",
+                    dataIndex: "clockOutAt",
+                    key: "clockOutAt",
+                    render: (text: string | null) =>
+                      text ? (
+                        new Date(text).toLocaleString()
+                      ) : (
+                        <Tag color="green">Active</Tag>
+                      ),
+                  },
+                  {
+                    title: "Clock In Note",
+                    dataIndex: "clockInNote",
+                    key: "clockInNote",
+                    render: (note: string | null) => note || "-",
+                  },
+                  {
+                    title: "Clock Out Note",
+                    dataIndex: "clockOutNote",
+                    key: "clockOutNote",
+                    render: (note: string | null) => note || "-",
+                  },
+                ]}
+                dataSource={historyData?.getHistoryForWorkers || []}
+                pagination={{ pageSize: 5 }}
+                rowKey="id"
+                size="small"
+              />
+            </div>
+          ) : (
+            <div style={{ textAlign: "center", marginTop: 24 }}>
+              <Spin />
+            </div>
+          )}
+        </Content>
+      </Layout>
+      <Modal
+        title={`Add a note (optional) for ${
+          pendingAction === "clock-in" ? "Clock In" : "Clock Out"
+        }`}
+        open={noteModalVisible}
+        onOk={handleNoteSubmit}
+        okButtonProps={{ loading: noteSubmitting, disabled: noteSubmitting }}
+        onCancel={() => setNoteModalVisible(false)}
+        okText="Confirm"
+      >
+        <Input.TextArea
+          rows={3}
+          placeholder="Type a note or leave empty..."
+          value={noteText}
+          onChange={(e) => setNoteText(e.target.value)}
+        />
+      </Modal>
+    </>
   );
 };
 

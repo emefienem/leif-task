@@ -35,7 +35,7 @@ export const typeDefs = gql`
   }
   type DashboardStats {
     avgHoursPerDay: Float
-    dailyCount: Int
+    dailyCount: Float
     totalHoursLastWeek: Float
   }
 
@@ -43,7 +43,7 @@ export const typeDefs = gql`
     me: User
     getHistory: [Shift!]
     managerClockedIn: [User!]
-    getShiftsByUser(userId: ID!): [Shift!]
+    getHistoryForWorkers(userId: ID!): [Shift!]
     getDashboardStats: DashboardStats!
     getGeoFence: GeoFence
   }

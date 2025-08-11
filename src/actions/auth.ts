@@ -3,13 +3,13 @@
 import { redirect } from "next/navigation";
 
 export async function login() {
-  redirect("/auth/login");
+  redirect("/api/auth/login");
 }
 
 export async function signup() {
-  redirect("/auth/login?screen_hint=signup");
+  redirect("/api/auth/login?screen_hint=signup");
 }
 
 export async function logout() {
-  redirect("/auth/logout");
+  redirect("/api/auth/logout");
 }

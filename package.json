@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.13.9",
-    "@auth0/nextjs-auth0": "^4.9.0",
+    "@auth0/nextjs-auth0": "^2.5.0",
     "@graphql-tools/schema": "^10.0.25",
     "@pothos/core": "^4.8.1",
     "@pothos/plugin-prisma": "^4.10.0",

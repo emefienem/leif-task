@@ -31,21 +31,54 @@ export const resolvers = {
   Query: {
     me: async (_parent: unknown, _args: unknown, ctx: Context) => ctx.user,
 
-    getHistory: async (_parent: unknown, _args: unknown, ctx: Context) =>
-      prisma.shift.findMany({ where: { userId: ctx.user.id } }),
+    getHistory: async (_parent: unknown, _args: unknown, ctx: Context) => {
+      // Get all care workers managed by this manager
+      const careWorkers = await prisma.user.findMany({
+        where: { managerId: ctx.user.id, role: "CARE_WORKER" },
+        select: { id: true },
+      });
+
+      const careWorkerIds = careWorkers.map((cw) => cw.id);
+
+      if (careWorkerIds.length === 0) {
+        return [];
+      }
+
+      // Get all shifts for these care workers, including user info
+      const shifts = await prisma.shift.findMany({
+        where: { userId: { in: careWorkerIds } },
+        include: { user: true },
+        orderBy: { clockInAt: "desc" },
+      });
+
+      return shifts.map((s) => ({
+        ...s,
+        clockInAt: s.clockInAt ? s.clockInAt.toISOString() : null,
+        clockOutAt: s.clockOutAt ? s.clockOutAt.toISOString() : null,
+      }));
+    },
 
     managerClockedIn: async (_parent: unknown, _args: unknown, ctx: Context) =>
       prisma.user.findMany({
         where: {
           role: "CARE_WORKER",
+          managerId: ctx.user.id,
           shifts: {
             some: { clockOutAt: null },
           },
         },
       }),
 
-    getShiftsByUser: async (_parent: unknown, args: ArgsWithUserId) =>
-      prisma.shift.findMany({ where: { userId: args.userId } }),
+    getHistoryForWorkers: async (_parent: unknown, args: ArgsWithUserId) => {
+      const shifts = await prisma.shift.findMany({
+        where: { userId: args.userId },
+      });
+      return shifts.map((s) => ({
+        ...s,
+        clockInAt: s.clockInAt ? s.clockInAt.toISOString() : null,
+        clockOutAt: s.clockOutAt ? s.clockOutAt.toISOString() : null,
+      }));
+    },
 
     getDashboardStats: async (
       _parent: unknown,

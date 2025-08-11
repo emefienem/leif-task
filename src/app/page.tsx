@@ -36,24 +36,8 @@
 import React, { useEffect } from "react";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { useUser } from "@auth0/nextjs-auth0";
 
 export default function Home() {
-  const { user, isLoading } = useUser();
-  useEffect(() => {
-    if (!isLoading && user) {
-      fetch("/api/user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          auth0Id: user.sub,
-          name: user.name,
-          email: user.email,
-        }),
-      });
-    }
-  }, [user, isLoading]);
-
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>Error: {error.message}</p>;
   return (
