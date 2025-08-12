@@ -7,8 +7,8 @@ export default async function logout(
 ) {
   await handleLogout(req, res, {
     returnTo: process.env.AUTH0_BASE_URL, // redirect after logout
-    logoutParams: {
-      federated: true, // ths would clear Auth0 SSO session too
-    },
+    // logoutParams: {
+    //   federated: true, // ths would clear Auth0 SSO session too
+    // },
   });
 }

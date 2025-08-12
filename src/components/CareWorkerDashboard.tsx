@@ -98,13 +98,13 @@ const CareWorkerDashboard = ({ mainUser }: UserProfile) => {
   useEffect(() => {
     if (!historyData?.getHistoryForWorkers || !userData?.me?.id) return;
 
+    const savedStatus = localStorage.getItem("currentlyClockedIn");
+    if (savedStatus !== null) return; // localStorage has priority
+
     const activeEntry = historyData.getHistoryForWorkers.find(
       (entry) => entry.user.id === userData.me!.id && !entry.clockOutAt
     );
-    const isClockedInServer = Boolean(activeEntry);
-
-    setCurrentlyClockedIn(isClockedInServer);
-    localStorage.setItem("currentlyClockedIn", String(isClockedInServer));
+    setCurrentlyClockedIn(Boolean(activeEntry));
   }, [historyData, userData]);
 
   const getCurrentLocation = (): Promise<{
