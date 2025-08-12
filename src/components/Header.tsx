@@ -59,6 +59,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { login, logout, signup } from "@/actions/auth";
+import { Menu } from "antd";
 
 export default function Header() {
   const { user } = useUser();
@@ -113,7 +114,7 @@ export default function Header() {
             className="mobile-menu-button"
             onClick={() => setIsOpen(!isOpen)}
           >
-            <i className="fas fa-bars text-gray-700 text-xl"></i>
+            <Menu />
           </button>
         </div>
       </div>
