@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { login, logout, signup } from "@/actions/auth";
 import { MenuOutlined } from "@ant-design/icons";
 
 export default function Header() {
@@ -30,16 +29,16 @@ export default function Header() {
 
           {isLoading ? null : !user ? (
             <>
-              <form action={login}>
+              <Link href={"/api/auth/login"}>
                 <button className="hover:text-blue-500 cursor-pointer">
                   Log in
                 </button>
-              </form>
-              <form action={signup}>
+              </Link>
+              <Link href={"/api/auth/login?screen_hint=signup"}>
                 <button className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-700 cursor-pointer">
                   Get Started
                 </button>
-              </form>
+              </Link>
             </>
           ) : (
             <>
@@ -48,11 +47,11 @@ export default function Header() {
                   Dashboard
                 </button>
               </Link>
-              <form action={logout}>
+              <Link href={"/api/auth/logout"}>
                 <button className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-700 cursor-pointer">
                   Logout
                 </button>
-              </form>
+              </Link>
             </>
           )}
         </div>
@@ -83,22 +82,22 @@ export default function Header() {
 
             {isLoading ? null : !user ? (
               <>
-                <form action={login}>
+                <Link href={"/api/auth/login"}>
                   <button
                     className="hover:text-blue-500 text-left w-full"
                     onClick={closeMenu}
                   >
                     Log in
                   </button>
-                </form>
-                <form action={signup}>
+                </Link>
+                <Link href={"/api/auth/login?screen_hint=signup"}>
                   <button
                     className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-700 w-full text-left"
                     onClick={closeMenu}
                   >
                     Get Started
                   </button>
-                </form>
+                </Link>
               </>
             ) : (
               <>
@@ -110,14 +109,14 @@ export default function Header() {
                     Dashboard
                   </button>
                 </Link>
-                <form action={logout}>
+                <Link href={"/api/auth/logout"}>
                   <button
                     className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-700 w-full text-left"
                     onClick={closeMenu}
                   >
                     Logout
                   </button>
-                </form>
+                </Link>
               </>
             )}
           </div>
