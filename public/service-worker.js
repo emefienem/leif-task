@@ -33,16 +33,7 @@ self.addEventListener("fetch", (event) => {
     requestUrl.origin === location.origin &&
     requestUrl.pathname.startsWith("/api/")
   ) {
-    event.respondWith(
-      caches.open(CACHE_NAME).then((cache) =>
-        fetch(event.request)
-          .then((networkResponse) => {
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
-          })
-          .catch(() => cache.match(event.request))
-      )
-    );
+    event.respondWith(fetch(event.request));
     return;
   }
   event.respondWith(
