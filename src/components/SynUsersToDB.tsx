@@ -14,7 +14,10 @@ export default function SyncUserToDb() {
 
     (async () => {
       try {
-        const res = await fetch("/api/users", { method: "POST" });
+        const res = await fetch("/api/users", {
+          method: "POST",
+          credentials: "include",
+        });
         if (res.ok) {
           // localStorage.setItem(key, "1");
           console.log("User synced to DB");

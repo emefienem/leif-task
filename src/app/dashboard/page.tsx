@@ -10,7 +10,10 @@ export default function DashboardPage() {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const res = await fetch("/api/getUserProtection");
+        const res = await fetch("/api/getUserProtection", {
+          method: "GET",
+          credentials: "include",
+        });
         if (!res.ok) {
           router.replace("/api/auth/login");
           return;
