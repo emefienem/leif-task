@@ -196,7 +196,7 @@ const config = {
   },
   "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nenum Role {\n  MANAGER\n  CARE_WORKER\n}\n\nmodel User {\n  id        String    @id @default(cuid())\n  auth0Id   String    @unique\n  email     String    @unique\n  name      String?\n  role      Role\n  shifts    Shift[]\n  managerId String?\n  geoFence  GeoFence?\n}\n\nmodel Shift {\n  id           String    @id @default(cuid())\n  user         User      @relation(fields: [userId], references: [id])\n  userId       String\n  clockInAt    DateTime\n  clockOutAt   DateTime?\n  clockInNote  String?\n  clockOutNote String?\n  clockInLat   Float\n  clockInLng   Float\n  clockOutLat  Float?\n  clockOutLng  Float?\n}\n\nmodel GeoFence {\n  id        String @id @default(cuid())\n  manager   User   @relation(fields: [managerId], references: [id])\n  managerId String @unique\n  lat       Float\n  lng       Float\n  radiusKm  Float\n}\n",
   "inlineSchemaHash": "31ef01509f6c0510943191bd458680cb4801a7311fe41dc6bbe69de21985c5da",
-  "copyEngine": false
+  "copyEngine": true
 }
 
 const fs = require('fs')
@@ -233,3 +233,9 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-darwin.dylib.node");
+path.join(process.cwd(), "generated/prisma/libquery_engine-darwin.dylib.node")
+// file annotations for bundling tools to include these files
+path.join(__dirname, "schema.prisma");
+path.join(process.cwd(), "generated/prisma/schema.prisma")

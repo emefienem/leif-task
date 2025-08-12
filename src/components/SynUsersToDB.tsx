@@ -9,15 +9,15 @@ export default function SyncUserToDb() {
     if (isLoading) return;
     if (!user) return;
 
-    // avoid repeated calls on re-mount: simple localStorage flag
-    const key = `user-synced-${user.sub}`;
-    if (localStorage.getItem(key)) return;
+    // // avoid repeated calls on re-mount: simple localStorage flag
+    // const key = `user-synced-${user.sub}`;
+    // if (localStorage.getItem(key)) return;
 
     (async () => {
       try {
         const res = await fetch("/api/users", { method: "POST" });
         if (res.ok) {
-          localStorage.setItem(key, "1");
+          // localStorage.setItem(key, "1");
           console.log("User synced to DB");
         } else {
           console.warn("User sync failed", await res.text());
