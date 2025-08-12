@@ -6,7 +6,7 @@ export default async function logout(
   res: NextApiResponse
 ) {
   await handleLogout(req, res, {
-    returnTo: "http://localhost:3000", // redirect after logout
+    returnTo: process.env.AUTH0_BASE_URL, // redirect after logout
     logoutParams: {
       federated: true, // ths would clear Auth0 SSO session too
     },
