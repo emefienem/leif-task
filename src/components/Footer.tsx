@@ -37,9 +37,6 @@ const Footer = () => {
               <li>
                 <a href="#">Contact Us</a>
               </li>
-              <li>
-                <a href="#">career@lief.care</a>
-              </li>
             </ul>
           </div>
           <div>

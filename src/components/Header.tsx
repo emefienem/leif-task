@@ -123,7 +123,7 @@ export default function Header() {
         <div className="md:hidden bg-white border-t border-gray-200 shadow-lg">
           <div className="px-4 py-4 flex flex-col space-y-4">
             <Link
-              href="#features"
+              href="/feature"
               className="hover:text-lief-blue"
               onClick={() => setIsOpen(false)}
             >
