@@ -16,8 +16,6 @@ export default function Header() {
           <Link href="#features" className="hover:text-lief-blue">
             Features
           </Link>
-          {/* Auth buttons */}
-          {/* <AuthButtons /> */}
           {!user ? (
             <>
               <form action={login}>
@@ -32,12 +30,19 @@ export default function Header() {
               </form>
             </>
           ) : (
-            <form action={logout}>
-              <button className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-700 cursor-pointer">
-                {" "}
-                Logout
-              </button>
-            </form>
+            <>
+              <Link href={"/dashboard"}>
+                <button className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-700 cursor-pointer">
+                  Dashboard
+                </button>
+              </Link>
+              <form action={logout}>
+                <button className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-700 cursor-pointer">
+                  {" "}
+                  Logout
+                </button>
+              </form>
+            </>
           )}
         </div>
         <div className="md:hidden">
@@ -49,20 +54,3 @@ export default function Header() {
     </nav>
   );
 }
-
-// This is a CLIENT component
-const AuthButtons = () => {
-  return (
-    <>
-      <a href="/auth/login" className="hover:text-lief-blue cursor-pointer">
-        <button>Log in</button>
-      </a>
-      <a
-        href="/auth/login?screen_hint=signup"
-        className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-700 cursor-pointer"
-      >
-        <button>Get Started</button>
-      </a>
-    </>
-  );
-};

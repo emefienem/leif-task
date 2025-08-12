@@ -1,12 +1,7 @@
 "use client";
 import React from "react";
 import { Result, Button, Card, Space, Typography } from "antd";
-import {
-  LockOutlined,
-  HomeOutlined,
-  LoginOutlined,
-  MailOutlined,
-} from "@ant-design/icons";
+import { LockOutlined, HomeOutlined, LoginOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { login } from "@/actions/auth";
 

@@ -145,7 +145,6 @@ export const resolvers = {
       // Average hours per day = total hours / 7 (days)
       const avgHoursPerDay = totalHours / 7;
 
-      // Daily count = average clock-ins per day (total clock-ins / 7)
       const dailyCount = shifts.length / 7;
 
       return {

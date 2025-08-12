@@ -1,0 +1,21 @@
+{
+  "name": "Lief clock",
+  "short_name": "Lief",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0070f3",
+  "description": "A PWA for Lief Clock App built with Next.js",
+  "icons": [
+    {
+      "src": "/v1033-b-04-b.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/v1033-b-04-b.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

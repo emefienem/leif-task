@@ -20,12 +20,6 @@ const Footer = () => {
               <li>
                 <a href="#">Features</a>
               </li>
-              {/* <li>
-                <a href="#">Pricing</a>
-              </li>
-              <li>
-                <a href="#">Security</a>
-              </li> */}
               <li>
                 <a href="#">Integrations</a>
               </li>
@@ -44,7 +38,7 @@ const Footer = () => {
                 <a href="#">Contact Us</a>
               </li>
               <li>
-                <a href="mailto:career@lief.care">career@lief.care</a>
+                <a href="#">career@lief.care</a>
               </li>
             </ul>
           </div>
