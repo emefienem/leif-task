@@ -75,7 +75,7 @@ export default function Header() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
-          <Link href="/feature" className="hover:text-lief-blue">
+          <Link href={"/feature"} className="hover:text-lief-blue">
             Features
           </Link>
           {!user ? (
@@ -123,7 +123,7 @@ export default function Header() {
         <div className="md:hidden bg-white border-t border-gray-200 shadow-lg">
           <div className="px-4 py-4 flex flex-col space-y-4">
             <Link
-              href="/feature"
+              href={"/feature"}
               className="hover:text-lief-blue"
               onClick={() => setIsOpen(false)}
             >
