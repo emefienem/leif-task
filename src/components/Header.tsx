@@ -59,7 +59,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { login, logout, signup } from "@/actions/auth";
-import { Menu } from "antd";
+import { MenuOutlined } from "@ant-design/icons";
 
 export default function Header() {
   const { user } = useUser();
@@ -114,7 +114,7 @@ export default function Header() {
             className="mobile-menu-button"
             onClick={() => setIsOpen(!isOpen)}
           >
-            <Menu />
+            <MenuOutlined style={{ fontSize: 24 }} />
           </button>
         </div>
       </div>
