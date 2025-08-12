@@ -9,7 +9,6 @@ export default function SyncUserToDb() {
     if (isLoading) return;
     if (!user) return;
 
-    // // avoid repeated calls on re-mount: simple localStorage flag
     // const key = `user-synced-${user.sub}`;
     // if (localStorage.getItem(key)) return;
 
